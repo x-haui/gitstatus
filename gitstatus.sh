@@ -1,5 +1,5 @@
 GITPREFIX="\[$(tput setaf 2)\][\A] \[$(tput bold)\]\[$(tput setaf 0)\]\u@\[$(tput setaf 0)\]\h \[$(tput setaf 4)\]\w $(tput sgr0)"
-GITSUFFIX="$ \[$(tput sgr0)\]"
+GITSUFFIX="\[$(tput sgr0)\]$ "
 
 export GITSTATUS
 export HAVE_GIT=0

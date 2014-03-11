@@ -1,0 +1,61 @@
+#!/usr/bin/perl
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#====================================================================
+# Name			: gitstatus.pl
+# Date			: 2014-02-21
+# Author		: Haui, haui45@web.de 
+# Version		: 0.1
+# Copyright		: GPL
+# Description	: 
+#====================================================================
+
+use strict;
+use warnings;
+use Term::ANSIColor;
+#use 5.10.0;
+#use feature 'say';
+
+
+##system("git", "status") and exit(0);
+my $cmd = qq(git status 2>&1);
+`$cmd`;
+exit(7) if($? != 0);
+
+my $branch=`git branch | grep "\*"`;
+chomp $branch;
+$branch .= " ";
+print color("green"), $branch;
+
+my @status = `git status -s`;
+
+my %has;
+
+foreach my $stat(@status){
+	
+	chomp $stat;
+	$stat =~ s#^(..).+#$1#;
+	$has{$stat}++;
+}
+
+foreach my $key (sort keys %has){
+	if($key =~ m/[A]/){
+		print color("green"), "[$key:$has{$key}] ";
+	}elsif ($key =~ m/[M]/){
+		print color("blue"), "[$key:$has{$key}] ";
+	}else{
+		print color("red"), "[$key:$has{$key}] ";
+	}
+}
+#chop $branch;
+#print color("red"), "$branch\n";
